@@ -1,0 +1,113 @@
+<html>
+    <head>
+        <link
+            href="http://cdn.pydata.org/bokeh/release/bokeh-2.1.0.min.css"
+            rel="stylesheet" type="text/css" />
+        <link
+            href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-2.1.0.min.css"
+            rel="stylesheet" type="text/css" />
+
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-2.1.0.min.js"></script>
+        <script
+            src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-2.1.0.min.js"></script>
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js"></script>
+        <link
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+            rel="stylesheet" />
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+            rel="stylesheet" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker10').datetimepicker({
+                    viewMode: 'months',
+                    format: 'MM/YYYY',
+                    maxDate: new Date(),
+                });
+            });
+        </script>
+
+    </head>
+
+    <body>
+        <div class="container" style="margin-top: 8%;">
+            <div class="row">
+                <div class="text-center">
+                    <h1>Stock Prices</h1>
+                </div>
+                <div class="col-xs-12 col-xs-offset-0">
+                    <form role="form">
+                        <div class="form-group">
+                            <fieldset class="form-group col-xs-3">
+                                <select name="feature_name"
+                                    class="form-control">
+                                    {% for feature in feature_names %}
+                                    {% if feature == current_feature_name %}
+                                    <option selected value="{{ feature }}">{{
+                                        feature }}</option>
+                                    {% else %}
+                                    <option value="{{ feature }}">{{ feature
+                                        }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </fieldset>
+                            <fieldset class="form-group col-xs-3">
+                                <div class='input-group date'
+                                    id='datetimepicker10'>
+                                    <input type='text' class="form-control"
+                                        name="date" value="{{ start_date }}"
+                                        required/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon
+                                            glyphicon-calendar">
+                                        </span>
+                                    </span>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group col-xs-6">
+                                <div class="input-group">
+                                    <input class="form-control" type="text"
+                                        name="search"
+                                        placeholder="Search for a ticker..." {% if search
+                                        is not none %} value="{{ search }}"
+                                        {% endif %} required/>
+                                    <span class="input-group-btn">
+                                        <button id="submit" class="btn
+                                            btn-success"
+                                            type="submit">
+                                            <i class="glyphicon
+                                                glyphicon-search"
+                                                aria-hidden="true"></i>
+                                            Search
+                                        </button>
+                                    </span>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div id="plot-content">
+                    {% if search is not none %}
+                    {% if ticker_exists == True %}
+                    {{ script|safe }}
+                    {{ div|safe }}
+                    {% else %}
+                    {{ "Plot results" | safe }}
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
